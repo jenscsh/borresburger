@@ -92,6 +92,11 @@ export default function Order() {
         }
     }
 
+    function RemoveItem(item) {
+        let newCart = cart.filter(x => x.type !== item.type);
+        setCart(newCart);
+    }
+
     function Order() {
         setOrderId(Math.floor(Math.random() * 1000));
     }
@@ -100,8 +105,6 @@ export default function Order() {
         setError("");
         setOrderId(null);
     }
-
-
 
     return (
         <main>
@@ -116,11 +119,11 @@ export default function Order() {
                     {login ?
                         <>
                             <button type='submit'>Logg inn</button>
-                            <a onClick={() => setLogin(false)}>Ny bruker?</a>
+                            <button type="button" className="swap" onClick={() => setLogin(false)} aria-label="Klikk her for å registrere deg" >Ny bruker?</button>
                         </> :
                         <>
                             <button type='submit'>Registrer bruker</button>
-                            <a onClick={() => setLogin(true)}>Har du bruker?</a>
+                            <button type="button" className="swap" onClick={() => setLogin(true)} aria-label="Klikk her for å logge inn">Har du bruker?</button>
                         </>}
                     {error !== "" ? <p className="error">{error}</p> : null}
                 </form>
@@ -143,12 +146,12 @@ export default function Order() {
                         <h2>Ordrekoden din er:</h2>
                         <h1>{orderId}</h1>
                         <p>Vi jobber nå med bestillingen din.</p>
-                        <a onClick={ToOrder}>Tilbake til bestilling</a>
+                        <button className="swap" onClick={ToOrder}>Tilbake til bestilling</button>
                     </div> :
                     <div className="final error">
                         <h1>Oi, det oppstod en feil</h1>
                         <h2>Ordren din er ikke mottatt.</h2>
-                        <a onClick={ToOrder}>Tilbake til bestilling</a>
+                        <button className="swap" onClick={ToOrder}>Tilbake til bestilling</button>
                     </div>}
         </main>
     )
@@ -158,7 +161,7 @@ export default function Order() {
             cart.length === 0 ? <p>Ingenting her, legg noe til!</p> : <>
                 {cart.map(cartItem => {
                     return (
-                        <CartItem navn={cartItem.type} pris={cartItem.pris} addCart={AddToCart} mengde={cartItem.amount} item={cartItem} key={cartItem.id} />
+                        <CartItem navn={cartItem.type} pris={cartItem.pris} removeItem={RemoveItem} mengde={cartItem.amount} item={cartItem} key={cartItem.id} />
                     )
                 }
                 )}
@@ -184,12 +187,6 @@ const GlobalStyle = createGlobalStyle`
         font-size: 1rem;
         padding: 10px;
     }
-    a {
-        color: blue;
-        cursor: pointer;
-        text-decoration: underline;
-        margin-top: 5px;
-    }
     form > input {
         margin-bottom: 10px;
         margin-top: 0;
@@ -197,6 +194,14 @@ const GlobalStyle = createGlobalStyle`
     }
     form > button {
         margin: auto;
+    }
+    .swap {
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+        margin-top: 5px;
+        border: 0;
+        margin: 5px 0;
     }
     .error {
         background: pink;

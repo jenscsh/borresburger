@@ -32,7 +32,7 @@ export default function Overview() {
         <main>
             <GlobalStyle />
             <div className="display" style={{background: 'rgb(220, 255, 220)'}}>
-                <h1>Klare til henting</h1>
+                <h1>Klare til henting!</h1>
                 {readyOrders.map((order, index) => {
                     return <div key={index} className="item" style={{background: 'lightgreen'}}>
                     <h2>{order.leveranseId}: </h2>
